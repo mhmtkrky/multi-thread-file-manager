@@ -1,6 +1,6 @@
-Api(BackEnd / NodeJs) ve file-upload-app (Frontend / React) klasörlerinden oluşmaktadır.
-Her iki uygulamada npm start ile çalışmaktadır.
-Api klasörü altında bulunan config.js ile işlemler için gerekli olan konfigrasyon verileri girilebilmektedir.
+> Api(BackEnd / NodeJs) ve file-upload-app (Frontend / React) klasörlerinden oluşmaktadır.
+> Her iki uygulamada npm start ile çalışmaktadır.
+> Api klasörü altında bulunan config.js ile işlemler için gerekli olan konfigrasyon verileri girilebilmektedir.
 
 
 Input_file ve Output_file klasörlerini anlık olarak dinleyen 2 proses bulunmaktadır, input_file icerisine girisi yapilan videolar konfigrasyon icerisindeki islem sayisina ulastiginda, her video parçalanmakta ve ziplenmektedir.
