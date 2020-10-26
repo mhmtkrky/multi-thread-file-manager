@@ -1,51 +1,59 @@
-import logo from './logo.svg';
 import './App.css';
 import axios from 'axios';
 import React, { Component } from 'react';
 class App extends Component {
 
   state = {
-
-    // Initially, no file is selected 
-    selectedFile: null
+    selectedFile: null,
+    uploadDis: true,
+    fileChoseDis: false
   };
 
-  // On file select (from the pop up) 
   onFileChange = event => {
-
-    // Update the state 
-    this.setState({ selectedFile: event.target.files[0] });
-
+    this.state.uploadDis = false;
+    if (event?.target?.files[0]?.type === "video/mp4") {
+      console.log("Basari ile yuklendi.");
+      this.setState(
+        {
+          selectedFile: event.target.files[0],
+          fileChoseDis: true,
+          uploadDis: false
+        }
+      );
+    }
+    else {
+      this.setState(
+        {
+          selectedFile: null,
+          fileChoseDis: false,
+          uploadDis: true
+        }
+      );
+    }
   };
-
-  // On file upload (click the upload button) 
   onFileUpload = () => {
+    if (this.state.selectedFile != null && this.state.selectedFile.type === "video/mp4") {
+      const formData = new FormData();
+      formData.append(
+        "file",
+        this.state.selectedFile,
+        this.state.selectedFile.name
+      );
 
-    // Create an object of formData 
-    const formData = new FormData();
-
-    // Update the formData object 
-    formData.append(
-      "file",
-      this.state.selectedFile,
-      this.state.selectedFile.name
-    );
-
-    // Details of the uploaded file 
-    console.log(this.state.selectedFile);
-
-    // Request made to the backend api 
-    // Send formData object 
-    axios.post("http://localhost:3001/add", formData, { // receive two parameter endpoint url ,form data 
-    })
-      .then(res => { // then print response status
-        //TODO: Butonu gizle. SAdece .mp4 olsun...
-        console.log(res.statusText)
+      axios.post("http://localhost:3001/add", formData, {
       })
-  };
-
-  // File content to be displayed after 
-  // file upload is complete 
+        .then(res => {
+          console.log("Status Kodu : " + res.statusText);
+          this.setState(
+            {
+              selectedFile: null,
+              fileChoseDis: false,
+              uploadDis: true
+            }
+          );
+        })
+    }
+  }
   fileData = () => {
 
     if (this.state.selectedFile) {
@@ -72,20 +80,20 @@ class App extends Component {
   };
 
   render() {
-
     return (
       <div>
         <h1>
-          GeeksforGeeks
+          File Manager
           </h1>
         <h3>
-          File Upload using React!
+          File Upload!
           </h3>
         <div>
-          <input type="file" onChange={this.onFileChange} />
-          <button onClick={this.onFileUpload}>
-            Upload!
+          <input disabled={this.state.fileChoseDis} type="file" onChange={this.onFileChange} />
+          <button disabled={this.state.uploadDis} onClick={this.onFileUpload}>
+            Yükle!
               </button>
+
         </div>
         {this.fileData()}
       </div>
